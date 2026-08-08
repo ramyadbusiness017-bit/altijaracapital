@@ -27,7 +27,7 @@ export default async function ReferralsPage() {
     .from('transactions')
     .select('*')
     .eq('user_id', user.id)
-    .eq('type', 'referral_bonus')
+    .eq('tx_hash', 'referral_bonus')
     .eq('status', 'approved')
     .order('created_at', { ascending: false });
 

@@ -71,6 +71,7 @@ export async function GET(request: Request) {
               uia_address: uiaAddress,
               wallet_address: uiaAddress,
               uid: customUid,
+              referral_code: customUid,
               first_name: firstName,
               last_name: lastName,
               email: user.email,

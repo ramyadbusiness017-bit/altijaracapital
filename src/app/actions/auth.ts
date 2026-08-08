@@ -11,6 +11,7 @@ export async function signup(formData: FormData) {
   const lastName = formData.get('lastName') as string
   const email = formData.get('email') as string
   const password = formData.get('password') as string
+  const referredBy = formData.get('referredBy') as string | null
 
   // Sign up the user in Supabase Auth
   const { data, error } = await supabase.auth.signUp({
@@ -20,6 +21,9 @@ export async function signup(formData: FormData) {
       data: {
         first_name: firstName,
         last_name: lastName,
+        onboarding_data: {
+          referredBy: referredBy || ''
+        }
       }
     }
   })
@@ -185,6 +189,7 @@ export async function verifyOtp(formData: FormData) {
         .update({
           wallet_address: uiaAddress,
           uid: customUid,
+          referral_code: customUid,
           first_name: user.user_metadata?.first_name || '',
           last_name: user.user_metadata?.last_name || '',
           phone: user.user_metadata?.phone || '',

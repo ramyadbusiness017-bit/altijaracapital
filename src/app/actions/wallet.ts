@@ -144,7 +144,7 @@ export async function deployCapital(amount: number) {
   // 1. Fetch current profile
   const { data: profile, error: profileError } = await supabase
     .from('profiles')
-    .select('wallet_balance, capital_balance, earnings_balance, investment_start_date, last_yield_calculation, referred_by, has_funded')
+    .select('wallet_balance, capital_balance, earnings_balance, investment_start_date, last_yield_calculation, referred_by, has_funded, referral_reward_paid')
     .eq('id', user.id)
     .single();
 
@@ -192,21 +192,21 @@ export async function deployCapital(amount: number) {
   if (updateError) throw new Error("Failed to deploy capital");
 
   // 3. Handle Referral Bonus if applicable
-  if (isFirstQualifyingFunding && profile.referred_by) {
-    // We need to bypass RLS to update the sponsor's wallet
+  if (isFirstQualifyingFunding && profile.referred_by && !profile.referral_reward_paid) {
+    // We need to bypass RLS to update the sponsor's earnings
     const adminSupabaseForSponsor = getAdminClient();
 
     const { data: sponsor } = await adminSupabaseForSponsor
       .from('profiles')
-      .select('id, wallet_balance')
+      .select('id, earnings_balance')
       .eq('referral_code', profile.referred_by)
       .single();
 
     if (sponsor) {
-      // Add $5 to sponsor
+      // Add $10 to sponsor's earnings_balance
       await adminSupabaseForSponsor
         .from('profiles')
-        .update({ wallet_balance: (sponsor.wallet_balance || 0) + 5 })
+        .update({ earnings_balance: (sponsor.earnings_balance || 0) + 10 })
         .eq('id', sponsor.id);
         
       // Record referral transaction for sponsor
@@ -214,12 +214,26 @@ export async function deployCapital(amount: number) {
         .from('transactions')
         .insert({
           user_id: sponsor.id,
-          amount: 5,
+          amount: 10,
           type: 'deposit',
           tx_hash: 'referral_bonus',
           status: 'approved',
           description: `Referral Bonus for inviting ${user.id.substring(0,6)}...`
         });
+
+      // Send Notification to Sponsor
+      await sendNotification(
+        sponsor.id,
+        "Referral Bonus Earned!",
+        `You have earned a $10 referral bonus! It has been credited to your earnings balance.`,
+        "success"
+      );
+      
+      // Mark referral reward as paid to prevent duplicate payouts
+      await adminSupabaseForSponsor
+        .from('profiles')
+        .update({ referral_reward_paid: true })
+        .eq('id', user.id);
     }
   }
 

@@ -153,7 +153,7 @@ export default function ReferralsOverview({
         {/* Link Side */}
         <div className="flex-1 p-8 md:p-10 flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/5">
           <h3 className="text-lg font-bold text-white mb-2">Your Invite Link</h3>
-          <p className="text-sm font-medium text-[#8B949E] mb-8">Share your unique link directly with friends or on social media to start earning $5 per funded user.</p>
+          <p className="text-sm font-medium text-[#8B949E] mb-8">Share your unique link directly with friends or on social media to start earning $10 per funded user.</p>
           
           <div className="w-full relative flex items-center group">
             <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/20 to-transparent rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -293,7 +293,7 @@ export default function ReferralsOverview({
                 
                 <div className="hidden md:block">
                   <p className={`text-sm font-extrabold ${ref.has_funded ? 'text-[#D4AF37]' : 'text-slate-600'}`}>
-                    {ref.has_funded ? '+$5.00 USDT' : '$0.00 USDT'}
+                    {ref.has_funded ? '+$10.00 USDT' : '$0.00 USDT'}
                   </p>
                 </div>
 
