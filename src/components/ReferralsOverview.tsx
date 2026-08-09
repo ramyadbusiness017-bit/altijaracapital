@@ -37,10 +37,12 @@ export default function ReferralsOverview({
   // Use the referral code from the DB, fallback to vanity
   const codeToUse = referralCode || `${firstName}${userId.substring(0,2)}`.replace(/\s+/g, '');
   
-  const [referralLink, setReferralLink] = useState(`https://altijara.capital/register?ref=${codeToUse}`);
-  const [qrCodeUrl, setQrCodeUrl] = useState(`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(`https://altijara.capital/register?ref=${codeToUse}`)}&bgcolor=0D1117&color=D4AF37&margin=0`);
+  const [mounted, setMounted] = useState(false);
+  const [referralLink, setReferralLink] = useState('');
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
 
   useEffect(() => {
+    setMounted(true);
     if (typeof window !== 'undefined') {
       const link = `${window.location.origin}/register?ref=${codeToUse}`;
       setReferralLink(link);
@@ -191,7 +193,11 @@ export default function ReferralsOverview({
         <div className="hidden md:flex p-8 md:p-10 items-center justify-center gap-8 bg-gradient-to-br from-[#161B22]/80 to-[#0D1117] min-w-[320px] relative">
           <div className="absolute top-0 left-0 w-full h-full bg-[#D4AF37]/5 pointer-events-none" />
           <div className="w-32 h-32 bg-white rounded-2xl p-2 shadow-[0_0_30px_rgba(212,175,55,0.15)] flex items-center justify-center flex-shrink-0 hover:scale-105 transition-transform duration-500 cursor-pointer" onClick={handleCopy}>
-             <img src={qrCodeUrl} alt="Referral QR Code" className="w-full h-full object-contain mix-blend-multiply" />
+             {mounted && qrCodeUrl ? (
+               <img src={qrCodeUrl} alt="Referral QR Code" className="w-full h-full object-contain mix-blend-multiply" />
+             ) : (
+               <div className="w-full h-full bg-slate-100 animate-pulse rounded-xl" />
+             )}
           </div>
           <div className="flex flex-col">
             <h4 className="text-base font-bold text-white mb-2">Scan to Register</h4>
