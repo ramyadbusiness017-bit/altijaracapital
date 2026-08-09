@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Bell,
@@ -36,10 +36,17 @@ export default function ReferralsOverview({
 
   // Use the referral code from the DB, fallback to vanity
   const codeToUse = referralCode || `${firstName}${userId.substring(0,2)}`.replace(/\s+/g, '');
-  const referralLink = `https://altijara.capital/register?ref=${codeToUse}`;
   
-  // High contrast QR code to match the dark theme
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${referralLink}&bgcolor=0D1117&color=D4AF37&margin=0`;
+  const [referralLink, setReferralLink] = useState(`https://altijara.capital/register?ref=${codeToUse}`);
+  const [qrCodeUrl, setQrCodeUrl] = useState(`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(`https://altijara.capital/register?ref=${codeToUse}`)}&bgcolor=0D1117&color=D4AF37&margin=0`);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const link = `${window.location.origin}/register?ref=${codeToUse}`;
+      setReferralLink(link);
+      setQrCodeUrl(`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(link)}&bgcolor=0D1117&color=D4AF37&margin=0`);
+    }
+  }, [codeToUse]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(referralLink);
