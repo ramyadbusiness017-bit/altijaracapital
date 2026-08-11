@@ -217,6 +217,7 @@ function HomeContent() {
               </form>
 
               <form action={loginWithGoogle} className="mt-4">
+                {refCode && <input type="hidden" name="referredBy" value={refCode} />}
                 <button 
                   type="submit"
                   className="w-full py-3.5 mb-3 bg-white border border-[#07351A] hover:bg-slate-50 text-[#07351A] font-semibold rounded-lg text-[15px] transition-colors flex items-center justify-center gap-2 shadow-sm"

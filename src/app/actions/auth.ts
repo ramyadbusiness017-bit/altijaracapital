@@ -256,10 +256,20 @@ export async function logout() {
   redirect('/')
 }
 
-export async function loginWithGoogle() {
+export async function loginWithGoogle(formData?: FormData) {
   const supabase = await createClient()
   
   const origin = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+
+  if (formData) {
+    const referredBy = formData.get('referredBy') as string;
+    if (referredBy) {
+      // Inline the save to avoid circular imports, or just import saveSetupStep at the top of auth.ts
+      // Actually we can just dynamically import to avoid circular dependency
+      const { saveSetupStep } = await import('./setup');
+      await saveSetupStep({ referredBy });
+    }
+  }
   
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',

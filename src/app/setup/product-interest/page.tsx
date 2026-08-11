@@ -13,60 +13,63 @@ export default function ProductInterestPage() {
   }
 
   return (
-    <div className="w-full max-w-xl mx-auto py-12">
-      <h1 className="text-4xl md:text-5xl font-bold text-[#07351A] mb-12 leading-tight font-serif tracking-tight">
+    <div className="w-full max-w-xl mx-auto py-8 animate-fade-in-up">
+      <h1 className="text-3xl md:text-4xl font-bold text-[#07351A] mb-8 leading-tight font-serif tracking-tight text-center">
         What products are you interested in?
       </h1>
 
       <form action={handleNext} className="space-y-4">
         
         {/* Managed Portfolios */}
-        <label className="flex items-center justify-between p-6 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-[#07351A] transition-colors group relative overflow-hidden shadow-sm">
+        <label className="flex items-center justify-between p-5 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-2xl cursor-pointer hover:border-[#07351A]/40 hover:bg-white/80 transition-all group relative overflow-hidden shadow-sm hover:shadow-md">
           <input type="checkbox" name="managed" className="peer sr-only" />
-          <span className="text-lg font-medium text-slate-800">Managed Portfolios</span>
-          <div className="text-slate-200 peer-checked:text-[#07351A] transition-colors">
-            <Circle className="w-8 h-8 block peer-checked:hidden" />
-            <CheckCircle2 className="w-8 h-8 hidden peer-checked:block fill-[#07351A] text-white" />
+          <span className="text-[15px] font-semibold text-slate-700 peer-checked:text-[#07351A]">Managed Portfolios</span>
+          <div className="text-slate-200 peer-checked:text-[#D4AF37] transition-colors">
+            <Circle className="w-6 h-6 block peer-checked:hidden" />
+            <CheckCircle2 className="w-6 h-6 hidden peer-checked:block fill-[#07351A] text-white" />
           </div>
+          {/* Subtle glow when checked */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/0 to-[#D4AF37]/10 opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
         </label>
 
         {/* Trading */}
-        <label className="flex items-center justify-between p-6 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-[#07351A] transition-colors group relative overflow-hidden shadow-sm">
+        <label className="flex items-center justify-between p-5 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-2xl cursor-pointer hover:border-[#07351A]/40 hover:bg-white/80 transition-all group relative overflow-hidden shadow-sm hover:shadow-md">
           <input type="checkbox" name="trading" className="peer sr-only" />
-          <span className="text-lg font-medium text-slate-800">Trading of Stocks and ETFs</span>
-          <div className="text-slate-200 peer-checked:text-[#07351A] transition-colors">
-            <Circle className="w-8 h-8 block peer-checked:hidden" />
-            <CheckCircle2 className="w-8 h-8 hidden peer-checked:block fill-[#07351A] text-white" />
+          <span className="text-[15px] font-semibold text-slate-700 peer-checked:text-[#07351A]">Trading of Stocks and ETFs</span>
+          <div className="text-slate-200 peer-checked:text-[#D4AF37] transition-colors">
+            <Circle className="w-6 h-6 block peer-checked:hidden" />
+            <CheckCircle2 className="w-6 h-6 hidden peer-checked:block fill-[#07351A] text-white" />
           </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/0 to-[#D4AF37]/10 opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
         </label>
 
         {/* Savings */}
-        <label className="flex items-center justify-between p-6 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-[#07351A] transition-colors group relative overflow-hidden shadow-sm">
+        <label className="flex items-center justify-between p-5 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-2xl cursor-pointer hover:border-[#07351A]/40 hover:bg-white/80 transition-all group relative overflow-hidden shadow-sm hover:shadow-md">
           <input type="checkbox" name="savings" className="peer sr-only" />
-          <span className="text-lg font-medium text-slate-800">High Yield Savings Account</span>
-          <div className="text-slate-200 peer-checked:text-[#07351A] transition-colors">
-            <Circle className="w-8 h-8 block peer-checked:hidden" />
-            <CheckCircle2 className="w-8 h-8 hidden peer-checked:block fill-[#07351A] text-white" />
+          <span className="text-[15px] font-semibold text-slate-700 peer-checked:text-[#07351A]">High Yield Savings Account</span>
+          <div className="text-slate-200 peer-checked:text-[#D4AF37] transition-colors">
+            <Circle className="w-6 h-6 block peer-checked:hidden" />
+            <CheckCircle2 className="w-6 h-6 hidden peer-checked:block fill-[#07351A] text-white" />
           </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/0 to-[#D4AF37]/10 opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
         </label>
 
         {/* Crypto */}
-        <label className="flex items-center justify-between p-6 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-[#07351A] transition-colors group relative overflow-hidden shadow-sm">
+        <label className="flex items-center justify-between p-5 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-2xl cursor-pointer hover:border-[#07351A]/40 hover:bg-white/80 transition-all group relative overflow-hidden shadow-sm hover:shadow-md">
           <input type="checkbox" name="crypto" className="peer sr-only" defaultChecked />
-          <span className="text-lg font-medium text-slate-800">Crypto</span>
-          <div className="text-slate-200 peer-checked:text-[#07351A] transition-colors">
-            <Circle className="w-8 h-8 block peer-checked:hidden" />
-            <CheckCircle2 className="w-8 h-8 hidden peer-checked:block fill-[#07351A] text-white" />
+          <span className="text-[15px] font-semibold text-slate-700 peer-checked:text-[#07351A]">Crypto</span>
+          <div className="text-slate-200 peer-checked:text-[#D4AF37] transition-colors">
+            <Circle className="w-6 h-6 block peer-checked:hidden" />
+            <CheckCircle2 className="w-6 h-6 hidden peer-checked:block fill-[#07351A] text-white" />
           </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/0 to-[#D4AF37]/10 opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
         </label>
 
-        <div className="mt-12 flex justify-center pt-8">
-          <div className="w-16">
-            <SubmitButton 
-              text="&rarr;" 
-              className="w-14 h-14 bg-[#07351A] hover:bg-[#106E37] text-white rounded-full flex items-center justify-center text-2xl transition-all shadow-md hover:scale-105"
-            />
-          </div>
+        <div className="mt-10 flex justify-center pt-6">
+          <SubmitButton 
+            text="Continue" 
+            className="px-10 py-4 bg-gradient-to-r from-[#07351A] to-[#0A4D25] hover:from-[#0A4D25] hover:to-[#07351A] text-white font-bold rounded-2xl text-[15px] transition-all shadow-[0_4px_14px_rgba(7,53,26,0.25)] hover:shadow-[0_6px_20px_rgba(7,53,26,0.3)] active:scale-[0.98] w-full"
+          />
         </div>
 
       </form>

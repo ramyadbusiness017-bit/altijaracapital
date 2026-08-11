@@ -23,9 +23,9 @@ function SubmitIcon() {
       <button 
         type="submit"
         disabled={pending}
-        className="w-14 h-14 bg-[#07351A] hover:bg-[#106E37] text-white rounded-full flex items-center justify-center text-2xl transition-all shadow-md hover:scale-105 disabled:opacity-50"
+        className="px-10 py-4 bg-gradient-to-r from-[#07351A] to-[#0A4D25] hover:from-[#0A4D25] hover:to-[#07351A] text-white font-bold rounded-2xl text-[15px] transition-all shadow-[0_4px_14px_rgba(7,53,26,0.25)] hover:shadow-[0_6px_20px_rgba(7,53,26,0.3)] active:scale-[0.98] w-full disabled:opacity-50"
       >
-        &rarr;
+        Continue
       </button>
     </>
   );
@@ -45,22 +45,22 @@ export default function SliderStep({ title, min, max, step, defaultValue, suffix
   }).format(value) + (isMax ? "+" : "") + suffix;
 
   return (
-    <div className="w-full max-w-xl mx-auto py-12">
-      <h1 className="text-4xl md:text-5xl font-bold text-[#07351A] mb-16 leading-tight font-serif tracking-tight">
+    <div className="w-full max-w-xl mx-auto py-8 animate-fade-in-up">
+      <h1 className="text-3xl md:text-4xl font-bold text-[#07351A] mb-12 leading-tight font-serif tracking-tight text-center">
         {title}
       </h1>
 
       <form action={action} className="space-y-8">
         
-        <div className="relative pt-4 pb-8">
-          <div className="text-4xl font-serif text-[#07351A] mb-6 font-medium tracking-tight transition-all">
+        <div className="relative pt-4 pb-12 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-3xl px-8 shadow-sm">
+          <div className="text-4xl font-serif text-[#07351A] mb-10 mt-6 font-medium tracking-tight text-center transition-all drop-shadow-sm">
             {formattedValue}
           </div>
           
-          <div className="relative h-2 w-full">
-            <div className="absolute top-0 left-0 h-1 w-full bg-slate-200 rounded-full mt-0.5"></div>
+          <div className="relative h-2 w-full mb-4">
+            <div className="absolute top-0 left-0 h-1.5 w-full bg-slate-200/80 rounded-full mt-0.5"></div>
             <div 
-              className="absolute top-0 left-0 h-1 bg-[#0B913B] rounded-full mt-0.5 transition-all duration-75"
+              className="absolute top-0 left-0 h-1.5 bg-gradient-to-r from-[#D4AF37] to-[#0B913B] rounded-full mt-0.5 transition-all duration-75 shadow-[0_0_8px_rgba(212,175,55,0.4)]"
               style={{ width: `${percentage}%` }}
             ></div>
             <input 
@@ -71,12 +71,12 @@ export default function SliderStep({ title, min, max, step, defaultValue, suffix
               step={step}
               value={value}
               onChange={(e) => setValue(Number(e.target.value))}
-              className="absolute top-0 left-0 w-full h-2 appearance-none bg-transparent cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-8 [&::-webkit-slider-thumb]:h-8 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-[#0B913B] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md"
+              className="absolute top-0 left-0 w-full h-2.5 appearance-none bg-transparent cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-8 [&::-webkit-slider-thumb]:h-8 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-4 [&::-webkit-slider-thumb]:border-[#0B913B] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_4px_10px_rgba(0,0,0,0.1)] hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform"
             />
           </div>
         </div>
 
-        <div className="mt-12 flex justify-center pt-16">
+        <div className="mt-10 flex justify-center pt-2">
           <SubmitIcon />
         </div>
 

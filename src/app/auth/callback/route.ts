@@ -52,6 +52,22 @@ export async function GET(request: Request) {
           const nameParts = fullName.split(' ');
           const firstName = nameParts[0] || '';
           const lastName = nameParts.slice(1).join(' ') || '';
+          
+          // Get referredBy from cookies if it exists
+          let referredBy = '';
+          try {
+            const { cookies } = await import('next/headers');
+            const cookieStore = await cookies();
+            const setupDataCookie = cookieStore.get('altijara_onboarding_data')?.value;
+            if (setupDataCookie) {
+              const setupData = JSON.parse(setupDataCookie);
+              if (setupData.referredBy) {
+                referredBy = setupData.referredBy;
+              }
+            }
+          } catch (e) {
+            console.error('Error reading setup cookie in Google callback:', e);
+          }
 
           // Keep auth.users metadata synced just in case
           await adminSupabase.auth.admin.updateUserById(user.id, {
@@ -75,7 +91,8 @@ export async function GET(request: Request) {
               first_name: firstName,
               last_name: lastName,
               email: user.email,
-              avatar_url: avatarUrl
+              avatar_url: avatarUrl,
+              referred_by: referredBy
             }, { onConflict: 'id' });
 
           if (upsertError) {

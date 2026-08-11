@@ -46,33 +46,35 @@ export default async function PasswordPage(props: { searchParams: Promise<{ erro
   }
 
   return (
-    <div className="w-full max-w-xl mx-auto py-12 flex flex-col items-center">
-      <div className="w-20 h-20 bg-[#07351A]/10 rounded-full flex items-center justify-center mb-8">
-        <LockKeyhole className="w-10 h-10 text-[#07351A]" />
+    <div className="w-full mx-auto flex flex-col items-center animate-fade-in-up">
+      <div className="w-20 h-20 bg-gradient-to-br from-[#07351A]/10 to-[#D4AF37]/20 rounded-2xl flex items-center justify-center mb-8 shadow-sm border border-[#07351A]/5 transform rotate-3 transition-transform hover:rotate-6">
+        <div className="-rotate-3">
+          <LockKeyhole className="w-9 h-9 text-[#07351A]" />
+        </div>
       </div>
 
-      <h1 className="text-4xl md:text-5xl font-bold text-[#07351A] mb-4 leading-tight font-serif tracking-tight text-center">
-        Create Your Password
+      <h1 className="text-3xl md:text-4xl font-bold text-[#07351A] mb-4 leading-tight font-serif tracking-tight text-center">
+        Secure Your Account
       </h1>
       
-      <p className="text-lg text-slate-600 mb-12 text-center max-w-md">
-        Your email has been verified. Please create a strong password to secure your Al-Tijara account.
+      <p className="text-[15px] text-slate-500 mb-10 text-center max-w-md font-medium">
+        Your email has been verified. Create a strong password to protect your Al-Tijara portfolio.
       </p>
 
       {error && (
-        <div className="w-full mb-8 p-4 bg-red-50 text-red-600 text-[14px] rounded-xl border border-red-100 text-center font-medium">
+        <div className="w-full max-w-md mb-8 p-4 bg-red-50/80 backdrop-blur-sm text-red-600 text-[14px] rounded-2xl border border-red-100/50 text-center font-medium shadow-sm">
           {error}
         </div>
       )}
 
-      <form action={handleCreatePassword} className="w-full max-w-md space-y-5">
+      <form action={handleCreatePassword} className="w-full max-w-md space-y-4">
         <div>
           <input 
             type="password" 
             name="password"
             placeholder="New Password" 
             required
-            className="w-full px-4 py-4 border border-slate-200 rounded-xl text-[15px] focus:outline-none focus:ring-2 focus:ring-[#07351A] focus:border-[#07351A] transition-colors placeholder:text-slate-400"
+            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200/60 rounded-2xl text-[15px] focus:outline-none focus:ring-2 focus:ring-[#07351A]/20 focus:border-[#07351A]/40 transition-all placeholder:text-slate-400 font-medium"
           />
         </div>
 
@@ -82,15 +84,15 @@ export default async function PasswordPage(props: { searchParams: Promise<{ erro
             name="confirmPassword"
             placeholder="Confirm Password" 
             required
-            className="w-full px-4 py-4 border border-slate-200 rounded-xl text-[15px] focus:outline-none focus:ring-2 focus:ring-[#07351A] focus:border-[#07351A] transition-colors placeholder:text-slate-400"
+            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200/60 rounded-2xl text-[15px] focus:outline-none focus:ring-2 focus:ring-[#07351A]/20 focus:border-[#07351A]/40 transition-all placeholder:text-slate-400 font-medium"
           />
         </div>
 
-        <div className="pt-4">
+        <div className="pt-6">
           <SubmitButton 
-            text="Secure My Account" 
-            loaderMessage="Encrypting Credentials..."
-            className="w-full py-4 bg-[#07351A] hover:bg-[#106E37] text-white font-bold rounded-xl text-lg transition-colors shadow-lg hover:shadow-xl"
+            text="Confirm Password" 
+            loaderMessage="Securing..."
+            className="w-full py-4 bg-gradient-to-r from-[#07351A] to-[#0A4D25] hover:from-[#0A4D25] hover:to-[#07351A] text-white font-bold rounded-2xl text-[15px] transition-all shadow-[0_4px_14px_rgba(7,53,26,0.25)] hover:shadow-[0_6px_20px_rgba(7,53,26,0.3)] active:scale-[0.98]"
           />
         </div>
       </form>
