@@ -292,3 +292,22 @@ export async function loginWithGoogle(formData?: FormData) {
 
 
 
+export async function requestPasswordReset(formData: FormData) {
+  const supabase = await createClient()
+  const email = formData.get('email') as string
+  
+  if (!email) {
+    redirect('/forgot-password?error=Email is required')
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://altijaracapital.vercel.app'}/setup/password`,
+  })
+
+  if (error) {
+    console.error('Password reset error:', error.message)
+    redirect(`/forgot-password?error=${encodeURIComponent(error.message)}`)
+  }
+
+  redirect('/forgot-password?success=Check your email for the reset link')
+}
