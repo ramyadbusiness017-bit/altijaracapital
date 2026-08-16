@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -43,10 +44,10 @@ export default function Footer() {
             <a href="#" className="text-[#07351A] text-[13px] hover:text-[#0B913B] transition-colors">Data management</a>
             <a href="#" className="text-[#07351A] text-[13px] hover:text-[#0B913B] transition-colors">Careers</a>
             <a href="#" className="text-[#07351A] text-[13px] hover:text-[#0B913B] transition-colors">FAQ</a>
-            <a href="#" className="text-[#07351A] text-[13px] hover:text-[#0B913B] transition-colors">Privacy policy</a>
-            <a href="#" className="text-[#07351A] text-[13px] hover:text-[#0B913B] transition-colors">Disclaimer notice</a>
-            <a href="/login" className="text-[#07351A] text-[13px] hover:text-[#0B913B] transition-colors">Sign In</a>
-            <a href="#" className="text-[#07351A] text-[13px] hover:text-[#0B913B] transition-colors">Sign up</a>
+            <Link href="/privacy" className="text-[#07351A] text-[13px] hover:text-[#0B913B] transition-colors">Privacy policy</Link>
+            <Link href="/terms" className="text-[#07351A] text-[13px] hover:text-[#0B913B] transition-colors">Disclaimer notice</Link>
+            <Link href="/login" className="text-[#07351A] text-[13px] hover:text-[#0B913B] transition-colors">Sign In</Link>
+            <Link href="/" className="text-[#07351A] text-[13px] hover:text-[#0B913B] transition-colors">Sign up</Link>
           </div>
 
           <div className="flex flex-col space-y-3.5">

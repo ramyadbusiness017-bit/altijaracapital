@@ -8,6 +8,12 @@ export default async function PasswordPage(props: { searchParams: Promise<{ erro
   const searchParams = await props.searchParams;
   const error = searchParams.error || '';
 
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login');
+  }
+
   async function handleCreatePassword(formData: FormData) {
     'use server';
     const password = formData.get('password') as string;

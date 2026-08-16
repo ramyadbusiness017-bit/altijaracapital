@@ -1,17 +1,19 @@
 "use client";
 
 import Image from 'next/image'
-import { Fingerprint } from 'lucide-react'
 import Footer from '../../components/Footer'
 import Link from 'next/link'
-import { loginWithPassword, loginWithGoogle } from '../actions/auth'
+import { requestPasswordReset } from '../actions/auth'
 import { Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 
-function LoginContent() {
+// Move searchParams usage into a separate client component
+import { useSearchParams } from 'next/navigation'
+
+function ForgotPasswordContent() {
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
+  const success = searchParams.get('success')
 
   return (
     <motion.div 
@@ -33,10 +35,10 @@ function LoginContent() {
         </div>
 
         <h1 className="text-3xl font-serif font-bold text-[#07351A] mb-2 text-center tracking-tight">
-          Welcome Back
+          Reset Password
         </h1>
-        <p className="text-slate-500 text-center text-[15px] mb-8 font-medium">
-          Sign in to manage your wealth portfolio
+        <p className="text-slate-500 text-center text-[14.5px] mb-8 font-medium">
+          Enter your email address to receive a secure password reset link.
         </p>
         
         {error && (
@@ -49,79 +51,47 @@ function LoginContent() {
           </motion.div>
         )}
 
-        <form action={loginWithPassword} className="space-y-4">
-          <div>
-            <input
-              name="email"
-              type="email"
-              placeholder="Email address"
-              className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200/60 rounded-2xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#07351A]/20 focus:border-[#07351A]/40 transition-all placeholder:text-slate-400 font-medium"
-              required
-            />
-          </div>
-          <div>
-            <input
-              name="password"
-              type="password"
-              placeholder="Password"
-              className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200/60 rounded-2xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#07351A]/20 focus:border-[#07351A]/40 transition-all placeholder:text-slate-400 font-medium"
-              required
-            />
-          </div>
-
-          <div className="flex justify-end pt-1 pb-2">
-            <Link href="/forgot-password" className="text-[#0B913B] text-[13px] font-semibold hover:text-[#07351A] transition-colors">Forgot password?</Link>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-4 mt-2 bg-gradient-to-r from-[#07351A] to-[#0A4D25] hover:from-[#0A4D25] hover:to-[#07351A] text-white font-bold rounded-2xl text-[14.5px] transition-all shadow-[0_4px_14px_rgba(7,53,26,0.25)] hover:shadow-[0_6px_20px_rgba(7,53,26,0.3)] flex items-center justify-center gap-2 active:scale-[0.98]"
+        {success ? (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="mb-6 p-5 bg-green-50 text-green-700 text-[13.5px] rounded-2xl border border-green-100 text-center font-medium shadow-sm leading-relaxed"
           >
-            Sign In
-          </button>
-        </form>
+            Password reset link sent! Please check your email inbox and spam folder.
+          </motion.div>
+        ) : (
+          <form action={requestPasswordReset} className="space-y-4">
+            <div>
+              <input
+                name="email"
+                type="email"
+                placeholder="Email address"
+                className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200/60 rounded-2xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#07351A]/20 focus:border-[#07351A]/40 transition-all placeholder:text-slate-400 font-medium"
+                required
+              />
+            </div>
 
-        <div className="flex items-center justify-center gap-4 py-6">
-          <div className="h-px bg-slate-200/70 flex-1"></div>
-          <span className="text-slate-400 text-[11px] font-bold uppercase tracking-wider">Or</span>
-          <div className="h-px bg-slate-200/70 flex-1"></div>
-        </div>
-
-        <div className="space-y-3">
-          <form action={loginWithGoogle}>
             <button
               type="submit"
-              className="w-full py-3.5 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold rounded-2xl text-[14.5px] transition-all flex items-center justify-center gap-3 shadow-sm active:scale-[0.98]"
+              className="w-full py-4 mt-2 bg-gradient-to-r from-[#07351A] to-[#0A4D25] hover:from-[#0A4D25] hover:to-[#07351A] text-white font-bold rounded-2xl text-[14.5px] transition-all shadow-[0_4px_14px_rgba(7,53,26,0.25)] hover:shadow-[0_6px_20px_rgba(7,53,26,0.3)] flex items-center justify-center gap-2 active:scale-[0.98]"
             >
-              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
-              Continue with Google
+              Send Reset Link
             </button>
           </form>
+        )}
 
-          <button
-            type="button"
-            className="w-full py-3.5 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold rounded-2xl text-[14.5px] transition-all flex items-center justify-center gap-3 shadow-sm active:scale-[0.98]"
-          >
-            <Fingerprint className="w-5 h-5 text-slate-500" />
-            Sign up with UAE PASS
-          </button>
-        </div>
-
-        <div className="mt-8 text-[11.5px] text-slate-400 text-center leading-relaxed px-2">
-          Secured by reCAPTCHA. <Link href="/privacy" className="hover:text-slate-600 underline underline-offset-2">Privacy</Link> & <Link href="/terms" className="hover:text-slate-600 underline underline-offset-2">Terms</Link> apply.
-        </div>
       </div>
       
       <div className="mt-8 flex justify-center pb-12">
         <span className="text-slate-500 text-[14px] font-medium">
-          New to Al-Tijara? <Link href="/#signup" className="text-[#07351A] font-bold hover:text-[#0B913B] transition-colors ml-1">Create an account</Link>
+          Remembered it? <Link href="/login" className="text-[#07351A] font-bold hover:text-[#0B913B] transition-colors ml-1">Sign In</Link>
         </span>
       </div>
     </motion.div>
   )
 }
 
-export default function LoginPage() {
+export default function ForgotPasswordPage() {
   return (
     <div className="min-h-screen font-sans bg-[#FAFAFA] text-slate-900 relative flex flex-col selection:bg-[#07351A] selection:text-white">
       
@@ -154,24 +124,18 @@ export default function LoginPage() {
               />
             </Link>
           </div>
-          <div className="hidden md:flex items-center gap-8 text-[15px] font-semibold text-slate-600">
-            <a href="/#pricing" className="hover:text-[#07351A] transition-colors">Pricing</a>
-            <a href="/#faq" className="hover:text-[#07351A] transition-colors">FAQ</a>
-            <Link href="/" className="px-5 py-2.5 rounded-xl bg-white border border-slate-200 text-[#07351A] hover:border-[#07351A]/30 hover:shadow-sm transition-all shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
-              Sign Up
-            </Link>
-          </div>
         </div>
       </nav>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center py-10 px-4 sm:px-6 relative z-10 w-full min-h-[600px]">
+        {/* We must wrap the component using useSearchParams in Suspense */}
         <Suspense fallback={
           <div className="w-full max-w-[440px] h-[500px] bg-white/50 backdrop-blur-md rounded-3xl border border-slate-200/60 animate-pulse flex items-center justify-center">
             <div className="w-8 h-8 border-4 border-[#07351A]/20 border-t-[#07351A] rounded-full animate-spin"></div>
           </div>
         }>
-          <LoginContent />
+          <ForgotPasswordContent />
         </Suspense>
       </main>
       

@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 import { generateUIA } from '@/lib/wallet'
 
 export async function GET(request: Request) {
@@ -56,7 +57,6 @@ export async function GET(request: Request) {
           // Get referredBy from cookies if it exists
           let referredBy = '';
           try {
-            const { cookies } = await import('next/headers');
             const cookieStore = await cookies();
             const setupDataCookie = cookieStore.get('altijara_onboarding_data')?.value;
             if (setupDataCookie) {

@@ -1,5 +1,6 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { generateUIA } from '@/lib/wallet'
@@ -259,15 +260,25 @@ export async function logout() {
 export async function loginWithGoogle(formData?: FormData) {
   const supabase = await createClient()
   
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://altijaracapital.vercel.app'
 
   if (formData) {
     const referredBy = formData.get('referredBy') as string;
     if (referredBy) {
-      // Inline the save to avoid circular imports, or just import saveSetupStep at the top of auth.ts
-      // Actually we can just dynamically import to avoid circular dependency
-      const { saveSetupStep } = await import('./setup');
-      await saveSetupStep({ referredBy });
+      const cookieStore = await cookies();
+      const existingStr = cookieStore.get('altijara_onboarding_data')?.value;
+      let data: any = {};
+      if (existingStr) {
+        try { data = JSON.parse(existingStr) } catch(e) {}
+      }
+      data.referredBy = referredBy;
+      cookieStore.set('altijara_onboarding_data', JSON.stringify(data), {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+      });
     }
   }
   
