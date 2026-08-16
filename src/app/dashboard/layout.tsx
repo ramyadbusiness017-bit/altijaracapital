@@ -1,11 +1,13 @@
 import Sidebar from '@/components/Sidebar'
 import MobileNav from '@/components/MobileNav'
 import TopUtilityBar from '@/components/TopUtilityBar'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { generateUIA } from '@/lib/wallet'
 import { NotificationsProvider } from '@/components/NotificationsProvider'
 import DashboardHeader from '@/components/DashboardHeader'
+import { sendNotification } from '@/app/actions/notifications'
+import { syncEarningsMilestones } from '@/app/actions/wallet'
 
 export const metadata = {
   title: 'Portfolio | Al-Tijara',
@@ -33,12 +35,7 @@ export default async function DashboardLayout({
   // --- Just-In-Time (JIT) Auto-Provisioning for Legacy Users ---
   // If an old user refreshes the dashboard, ensure they get their UIA and UID seamlessly!
   if (!profile?.uia_address || !profile?.uid) {
-    const { createClient: createAdminClient } = await import('@supabase/supabase-js');
-    const adminSupabase = createAdminClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      { auth: { persistSession: false } }
-    );
+    const adminSupabase = await createAdminClient();
 
     const { count } = await adminSupabase
       .from('profiles')
@@ -75,17 +72,11 @@ export default async function DashboardLayout({
     const daysCompleted = (now - startObj) / (1000 * 60 * 60 * 24);
 
     if (daysCompleted >= 30) {
-      const { createClient: createAdminClient } = await import('@supabase/supabase-js');
-      const adminSupabase = createAdminClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-      );
+      const adminSupabase = await createAdminClient();
 
       // Auto-authorize capital withdrawal
       await adminSupabase.from('profiles').update({ capital_withdrawal_permitted: true }).eq('id', user.id);
       
-      const { sendNotification } = await import('@/app/actions/notifications');
       await sendNotification(
         user.id,
         "Investment Cycle Complete",
@@ -98,7 +89,6 @@ export default async function DashboardLayout({
 
   // --- Auto-Sync Earnings Milestones Ledger ---
   if (profile?.capital_balance && profile?.capital_balance > 0 && profile?.investment_start_date) {
-    const { syncEarningsMilestones } = await import('@/app/actions/wallet');
     // Non-blocking sync
     syncEarningsMilestones(user.id).catch(console.error);
   }

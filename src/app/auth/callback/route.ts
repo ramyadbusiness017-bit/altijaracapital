@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { generateUIA } from '@/lib/wallet'
@@ -14,12 +14,7 @@ export async function GET(request: Request) {
     
     if (!error && user) {
       // Elevate to Admin Client to bypass RLS for profile creation
-      const { createClient: createAdminClient } = await import('@supabase/supabase-js');
-      const adminSupabase = createAdminClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-      );
+      const adminSupabase = await createAdminClient();
 
       // Check if user already has their UIA and UID set up
       const { data: profile, error: profileError } = await adminSupabase

@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { generateUIA } from '@/lib/wallet'
 
 export async function signup(formData: FormData) {
@@ -37,12 +37,7 @@ export async function signup(formData: FormData) {
   // Generate the HD Wallet (UIA)
   if (data.user) {
     try {
-      const { createClient: createAdminClient } = await import('@supabase/supabase-js');
-      const adminSupabase = createAdminClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-      );
+      const adminSupabase = await createAdminClient();
 
       const { count } = await adminSupabase
         .from('profiles')
@@ -163,12 +158,7 @@ export async function verifyOtp(formData: FormData) {
   if (user) {
     try {
       // Update the profile securely bypassing RLS
-      const { createClient: createAdminClient } = await import('@supabase/supabase-js');
-      const adminSupabase = createAdminClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-      );
+      const adminSupabase = await createAdminClient();
 
       // Fetch the next sequential HD Wallet index by counting active UIAs
       const { count, error: countError } = await adminSupabase

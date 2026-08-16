@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createAdminClient } from '@/lib/supabase/server';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
 import { sendNotification } from '@/app/actions/notifications';
@@ -551,7 +551,6 @@ export async function syncEarningsMilestones(userId: string) {
             description: `Day ${milestone} Earnings Payout`
           });
 
-        const { sendNotification } = await import('@/app/actions/notifications');
         await sendNotification(
           userId,
           `Day ${milestone} Earnings Payout`,
